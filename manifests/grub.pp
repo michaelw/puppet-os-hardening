@@ -16,7 +16,7 @@ class os_hardening::grub (
   Boolean $boot_without_password = true,
 ) {
 
-  case $::operatingsystem {
+  case $facts['os']['name'] {
     debian, ubuntu, cumuluslinux: {
       $grub_cfg = '/boot/grub/grub.cfg'
       $grub_cmd = '/usr/sbin/grub-mkconfig'
@@ -67,4 +67,3 @@ class os_hardening::grub (
   }
 
 }
-

@@ -31,7 +31,7 @@ class os_hardening::sysctl (
 ) {
 
   # set variables
-  if $::architecture == 'amd64' or $::architecture == 'x86_64' {
+  if $facts['os']['architecture'] == 'amd64' or $facts['os']['architecture'] == 'x86_64' {
     $x86_64 = true
   } else {
     $x86_64 = false
@@ -216,7 +216,7 @@ class os_hardening::sysctl (
     # if modules cannot be loaded at runtime, they must all
     # be pre-configured in initramfs
     if $enable_module_loading == false {
-      case $::operatingsystem {
+      case $facts['os']['name'] {
 	debian, ubuntu, cumuluslinux: {
 	  file { '/etc/initramfs-tools/modules':
 	    ensure  => file,
@@ -239,4 +239,3 @@ class os_hardening::sysctl (
     }
   }
 }
-
