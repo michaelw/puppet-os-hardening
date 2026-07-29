@@ -21,7 +21,7 @@ class os_hardening::pam (
 ) {
 
   # prepare package names
-  case $::operatingsystem {
+  case $facts['os']['name'] {
     redhat, fedora: {
       $pam_ccreds = 'pam_ccreds'
       $pam_passwdqc = 'pam_passwdqc'
@@ -45,7 +45,7 @@ class os_hardening::pam (
     name   => $pam_ccreds,
   }
 
-  case $::operatingsystem {
+  case $facts['os']['name'] {
     debian, ubuntu, cumuluslinux: {
       # configure paths
       $passwdqc_path = '/usr/share/pam-configs/passwdqc'
@@ -156,4 +156,3 @@ class os_hardening::pam (
   }
 
 }
-

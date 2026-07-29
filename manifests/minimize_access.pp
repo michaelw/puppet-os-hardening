@@ -30,7 +30,7 @@ class os_hardening::minimize_access (
   Integer $recurselimit                         = 5,
 ) {
 
-  case $::operatingsystem {
+  case $facts['os']['name'] {
     redhat, fedora: {
       $nologin_path = '/sbin/nologin'
       $shadow_path = ['/etc/shadow', '/etc/gshadow']
@@ -59,7 +59,7 @@ class os_hardening::minimize_access (
     }
   })
 # Added users with homes
-  $homes_users = split($::home_users, ',')
+  $homes_users = split($facts['home_users'], ',')
 
 # added ignore these homes
   $target_home_users = difference($homes_users, $ignore_home_users)
@@ -96,7 +96,7 @@ if $manage_cron_permissions == true {
 
   $cronfiles = [ '/etc/anacrontab', '/etc/crontab' ]
   $cronfiles.each |String $cronfile| {
-    if ($::existing[$cronfile]) {
+    if ($facts['existing'][$cronfile]) {
       file { $cronfile:
         ensure => file,
         mode   => 'og-rwx',
@@ -226,7 +226,7 @@ if $manage_cron_permissions == true {
 
   if $manage_system_users == true {
     # retrieve system users through custom fact
-    $system_users = split($::retrieve_system_users, ',')
+    $system_users = split($facts['retrieve_system_users'], ',')
 
     # build array of usernames we need to verify/change
     $ignore_users_arr = union($always_ignore_users, $ignore_users)
