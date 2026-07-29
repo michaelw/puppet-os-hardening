@@ -101,7 +101,7 @@ class os_hardening (
   # there may be differences when using kvm/lxc vs metal
 
   # Defaults for specific platforms
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian','Suse': {
       $def_umask = '027'
       $def_sys_uid_min = 100
